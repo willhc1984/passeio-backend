@@ -30,8 +30,8 @@ public class CategoriaController {
 	}
 		
 	@GetMapping("/{id}")
-	public Categoria buscarPorId(@PathVariable Long Id) {
-		return service.buscarPorId(Id);
+	public Categoria buscarPorId(@PathVariable Long id) {
+		return service.buscarPorId(id);
 	}
 	
 	@PostMapping

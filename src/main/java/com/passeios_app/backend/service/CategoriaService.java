@@ -1,9 +1,9 @@
 package com.passeios_app.backend.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
+import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
 import com.passeios_app.backend.model.Categoria;
 import com.passeios_app.backend.repository.CategoriaRepository;
 
@@ -22,7 +22,7 @@ public class CategoriaService {
 	
 	public Categoria buscarPorId(Long id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Categoria não enocntrada."));
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Categoria não encontrada."));
 	}
 	
 	public Categoria salvar(Categoria categoria) {
@@ -38,6 +38,9 @@ public class CategoriaService {
 	}
 	
 	public void excluir(Long id) {
+		if(!repository.existsById(id)) {
+			throw new RuntimeException("Categoria não encontrada.");
+		}
 		repository.deleteById(id);
 	}
 
