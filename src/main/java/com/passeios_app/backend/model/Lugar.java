@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import com.passeios_app.backend.model.Categoria;
 
 @Entity
 public class Lugar {
@@ -11,11 +14,19 @@ public class Lugar {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nome;
+    private String localizacao;
+    private String urlFoto;
+    private Double avaliacao;
+    
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
-
+    
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -52,13 +63,13 @@ public class Lugar {
 		this.avaliacao = avaliacao;
 	}
 
-	private String nome;
-
-    private String localizacao;
-
-    private String urlFoto;
-
-    private Double avaliacao;
+	public Categoria getCategoria() {
+		return categoria;
+	}
+	
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 
 
 }
