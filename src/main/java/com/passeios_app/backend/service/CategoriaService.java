@@ -4,29 +4,33 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
+import com.passeios_app.backend.exception.RegraNegocioException;
 import com.passeios_app.backend.model.Categoria;
 import com.passeios_app.backend.repository.CategoriaRepository;
+import com.passeios_app.backend.repository.LugarRepository;
 
 @Service
 public class CategoriaService {
 	
-	private final CategoriaRepository repository;
+	private final CategoriaRepository categoriaRepository;
+	private final LugarRepository lugarRepository;
 	
-	public CategoriaService(CategoriaRepository repository) {
-		this.repository = repository;
+	public CategoriaService(CategoriaRepository categoriaRepository, LugarRepository lugarRepository) {
+		this.categoriaRepository = categoriaRepository;
+		this.lugarRepository = lugarRepository;
 	}
 	
 	public List<Categoria> listar(){
-		return repository.findAll();
+		return categoriaRepository.findAll();
 	}
 	
 	public Categoria buscarPorId(Long id) {
-		return repository.findById(id)
+		return categoriaRepository.findById(id)
 				.orElseThrow(() -> new RecursoNaoEncontradoException("Categoria não encontrada."));
 	}
 	
 	public Categoria salvar(Categoria categoria) {
-		return repository.save(categoria);
+		return categoriaRepository.save(categoria);
 	}
 	
 	public Categoria atualizar(Long id, Categoria categoria) {
@@ -34,14 +38,19 @@ public class CategoriaService {
 		existente.setNome(categoria.getNome());
 		existente.setDescricao(categoria.getDescricao());
 		
-		return repository.save(existente);
+		return categoriaRepository.save(existente);
 	}
 	
 	public void excluir(Long id) {
-		if(!repository.existsById(id)) {
-			throw new RuntimeException("Categoria não encontrada.");
+		if(!categoriaRepository.existsById(id)) {
+			throw new RecursoNaoEncontradoException("Categoria não encontrada.");
 		}
-		repository.deleteById(id);
+		
+		if(lugarRepository.existsByCategoriaId(id)) {
+			throw new RegraNegocioException("Categoria possui lugares e não pode ser excluída.");
+		}
+		
+		categoriaRepository.deleteById(id);
 	}
 
 	

@@ -2,13 +2,17 @@ package com.passeios_app.backend.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "categorias")
 public class Categoria {
 	
 	@Id
@@ -18,6 +22,7 @@ public class Categoria {
     private String descricao;
     
     @OneToMany(mappedBy = "categoria")
+    @JsonManagedReference
     private List<Lugar> lugares;
 
 	public Categoria() {
@@ -41,5 +46,12 @@ public class Categoria {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	public List<Lugar> getLugares() {
+		return lugares;
+	}
 
+	public void setLugares(List<Lugar> lugares) {
+		this.lugares = lugares;
+	}
 }

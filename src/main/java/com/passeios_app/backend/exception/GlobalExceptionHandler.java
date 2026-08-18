@@ -6,12 +6,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlabalExceptionHandler {
+public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(RecursoNaoEncontradoException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String tratarRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
-		return ex.getMessage();
+	public ErroResponse tratarRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+		return new ErroResponse(404, ex.getMessage());
+	}
+	
+	@ExceptionHandler(RegraNegocioException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public ErroResponse tratarRegraNegocioException(RegraNegocioException ex) {
+		return new ErroResponse(409, ex.getMessage());
 	}
 
 }

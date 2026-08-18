@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
 import com.passeios_app.backend.model.Lugar;
 import com.passeios_app.backend.repository.LugarRepository;
 
@@ -22,7 +23,7 @@ public class LugarService {
 	
 	public Lugar buscarPorId(Long id) {
 		return repository.findById(id)
-				.orElseThrow( () -> new RuntimeException("Lugar não encontrado."));
+				.orElseThrow( () -> new RecursoNaoEncontradoException("Lugar não encontrado."));
 	}
 	
 	public Lugar salvar(Lugar lugar) {
@@ -42,6 +43,9 @@ public class LugarService {
 	}
 	
 	public void excluir(Long id) {
+		if(!repository.existsById(id)) {
+			throw new RecursoNaoEncontradoException("Lugar não encontrado.");
+		}
 		repository.deleteById(id);
 	}
 
