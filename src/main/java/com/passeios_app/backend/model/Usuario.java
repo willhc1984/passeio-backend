@@ -2,6 +2,9 @@ package com.passeios_app.backend.model;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +32,7 @@ public class Usuario {
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
+	@JsonBackReference
 	private Role role;
 
 	public Long getId() {

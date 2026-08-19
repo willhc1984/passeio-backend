@@ -3,6 +3,9 @@ package com.passeios_app.backend.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +28,7 @@ public class Permissao {
 	private String descricao;
 	
 	@ManyToMany(mappedBy = "permissoes")
+	@JsonIgnore
 	private List<Role> roles = new ArrayList<>();
 
 	public Long getId() {

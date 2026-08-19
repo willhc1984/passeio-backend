@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
+import com.passeios_app.backend.exception.RegraNegocioException;
 import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.repository.PermissionRepository;
 
@@ -27,6 +28,9 @@ public class PermissionService {
 	}
 	
 	public Permissao salvar(Permissao permissao) {
+		if(permissionRepository.existsByCodigo(permissao.getCodigo())) {
+			throw new RegraNegocioException("Já existe permissão com esse codigo.");
+		}
 		return permissionRepository.save(permissao);
 	}
 	
