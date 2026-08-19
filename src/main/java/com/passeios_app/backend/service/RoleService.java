@@ -5,16 +5,21 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
+import com.passeios_app.backend.exception.RegraNegocioException;
+import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.model.Role;
+import com.passeios_app.backend.repository.PermissionRepository;
 import com.passeios_app.backend.repository.RoleRepository;
 
 @Service
 public class RoleService {
 	
 	private final RoleRepository roleRepository;
+	private final PermissionRepository permissionRepository;
 	
-	public RoleService(RoleRepository roleRepository) {
+	public RoleService(RoleRepository roleRepository, PermissionRepository permissionRepository) {
 		this.roleRepository = roleRepository;
+		this.permissionRepository = permissionRepository;
 	}
 	
 	public List<Role> listar(){
@@ -27,6 +32,14 @@ public class RoleService {
 	}
 	
 	public Role salvar(Role role) {
+		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();
+		List<Permissao> permissoes = permissionRepository.findAllById(ids);
+		
+		if(permissoes.size() != ids.size()) {
+			throw new RegraNegocioException("Uma ou mais permissões não existem.");
+		}
+		
+		role.setPermissoes(permissoes);
 		return roleRepository.save(role);
 	}
 	

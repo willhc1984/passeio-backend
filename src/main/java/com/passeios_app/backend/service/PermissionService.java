@@ -24,7 +24,7 @@ public class PermissionService {
 	
 	public Permissao buscarPorId(Long id) {
 		return permissionRepository.findById(id)
-				.orElseThrow(() -> new RecursoNaoEncontradoException("Permissão não encontrada"));
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Permissão não encontrada."));
 	}
 	
 	public Permissao salvar(Permissao permissao) {
