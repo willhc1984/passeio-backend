@@ -44,12 +44,25 @@ public class RoleService {
 	}
 	
 	public Role atualizar(Long id, Role role) {
+		Role roleBanco = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrador."));
+		
+		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();		
+		List<Permissao> permissoes = permissionRepository.findAllById(ids);
+		
+		if(permissoes.size() != ids.size()) {
+			throw new RegraNegocioException("Uma ou mais permissões não existem.");
+		}
+		
+		roleBanco.setNome(role.getNome());
+		roleBanco.setDescricao(role.getDescricao());
+		roleBanco.setPermissoes(permissoes);
+		
 		Role existente = buscarPorId(id);
 		existente.setNome(role.getNome());
 		existente.setDescricao(role.getDescricao());
 		existente.setPermissoes(role.getPermissoes());
 		
-		return roleRepository.save(existente);
+		return roleRepository.save(roleBanco);
 	}
 	
 	public void excluir(Long id) {
