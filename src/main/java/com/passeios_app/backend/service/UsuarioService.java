@@ -5,16 +5,21 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
+import com.passeios_app.backend.exception.RegraNegocioException;
+import com.passeios_app.backend.model.Role;
 import com.passeios_app.backend.model.Usuario;
+import com.passeios_app.backend.repository.RoleRepository;
 import com.passeios_app.backend.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 	
 	private final UsuarioRepository usuarioRepository;
+	private final RoleRepository roleRepository;
 	
-	public UsuarioService(UsuarioRepository usuarioRepository) {
+	public UsuarioService(UsuarioRepository usuarioRepository, RoleRepository roleRepository) {
 		this.usuarioRepository = usuarioRepository;
+		this.roleRepository = roleRepository;
 	}
 	
 	public List<Usuario> listar(){
@@ -27,6 +32,19 @@ public class UsuarioService {
 	}
 	
 	public Usuario salvar(Usuario usuario) {
+		if(usuario.getRole() == null || usuario.getRole().getId() == null) {
+			throw new RegraNegocioException("Usuário deve possuir um papel.");
+		}
+		
+		Role role = roleRepository.findById(usuario.getRole().getId())
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
+		
+		if(usuarioRepository.existsByEmail(usuario.getEmail())) {
+			throw new RegraNegocioException("E-mail já está em uso.");
+		}
+		
+		usuario.setRole(role);
+		
 		return usuarioRepository.save(usuario);
 	}
 	

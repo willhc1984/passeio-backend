@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "permissoes")
 public class Permissao {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -61,6 +61,11 @@ public class Permissao {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	@Override
+	public String toString() {
+		return "Permissao [id=" + id + ", codigo=" + codigo + ", descricao=" + descricao + "]";
 	}
 	
 }

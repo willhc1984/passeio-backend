@@ -33,7 +33,9 @@ public class RoleService {
 	
 	public Role salvar(Role role) {
 		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();
+		System.out.println("Id's encontradas: " + ids);
 		List<Permissao> permissoes = permissionRepository.findAllById(ids);
+		System.out.println("Permissões: " + permissoes);
 		
 		if(permissoes.size() != ids.size()) {
 			throw new RegraNegocioException("Uma ou mais permissões não existem.");
@@ -46,7 +48,7 @@ public class RoleService {
 	public Role atualizar(Long id, Role role) {
 		Role roleBanco = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrador."));
 		
-		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();		
+		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();	
 		List<Permissao> permissoes = permissionRepository.findAllById(ids);
 		
 		if(permissoes.size() != ids.size()) {
