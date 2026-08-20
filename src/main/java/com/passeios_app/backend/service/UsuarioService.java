@@ -71,7 +71,7 @@ public class UsuarioService {
 	}
 	
 	public void excluir(Long id) {
-		if(usuarioRepository.existsById(id)) {
+		if(!usuarioRepository.existsById(id)) {
 			throw new RecursoNaoEncontradoException("Usuário não encontrado.");
 		}
 		

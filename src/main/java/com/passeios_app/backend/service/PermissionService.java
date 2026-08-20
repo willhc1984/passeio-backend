@@ -8,14 +8,17 @@ import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
 import com.passeios_app.backend.exception.RegraNegocioException;
 import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.repository.PermissionRepository;
+import com.passeios_app.backend.repository.RoleRepository;
 
 @Service
 public class PermissionService {
 	
 	private final PermissionRepository permissionRepository;
+	private final RoleRepository roleRepository;
 	
-	public PermissionService(PermissionRepository permissionRepository) {
+	public PermissionService(PermissionRepository permissionRepository, RoleRepository roleRepository) {
 		this.permissionRepository = permissionRepository;
+		this.roleRepository = roleRepository;
 	}
 	
 	public List<Permissao> listar(){
@@ -36,6 +39,11 @@ public class PermissionService {
 	
 	public Permissao atualizar(Long id, Permissao permissao) {
 		Permissao existente = buscarPorId(id);
+		
+		if(permissionRepository.existsByCodigoAndIdNot(permissao.getCodigo(), id)) {
+			throw new RegraNegocioException("Já existe uma permissão com este código.");
+		}
+		
 		existente.setCodigo(permissao.getCodigo());
 		existente.setDescricao(permissao.getDescricao());
 		
@@ -45,6 +53,10 @@ public class PermissionService {
 	public void excluir(Long id) {
 		if(!permissionRepository.existsById(id)) {
 			throw new RecursoNaoEncontradoException("Permissão não encontrada.");
+		}
+		
+		if(roleRepository.existsByPermissoesId(id)) {
+			throw new RegraNegocioException("Não é possivel excluir a permissão pois está associada a um Papel.");
 		}
 		
 		permissionRepository.deleteById(id);

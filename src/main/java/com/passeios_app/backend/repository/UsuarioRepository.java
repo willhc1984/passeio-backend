@@ -10,4 +10,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	// Existe algum usuário com esse e-mail que não seja o usuário que estou editando?
 	boolean existsByEmailAndIdNot(String email, Long id);
 	
+	boolean existsByRoleId(Long roleId);
+	
 }

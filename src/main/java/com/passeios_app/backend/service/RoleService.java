@@ -10,16 +10,19 @@ import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.model.Role;
 import com.passeios_app.backend.repository.PermissionRepository;
 import com.passeios_app.backend.repository.RoleRepository;
+import com.passeios_app.backend.repository.UsuarioRepository;
 
 @Service
 public class RoleService {
 	
 	private final RoleRepository roleRepository;
 	private final PermissionRepository permissionRepository;
+	private final UsuarioRepository usuarioRepository;
 	
-	public RoleService(RoleRepository roleRepository, PermissionRepository permissionRepository) {
+	public RoleService(RoleRepository roleRepository, PermissionRepository permissionRepository, UsuarioRepository usuarioRepository) {
 		this.roleRepository = roleRepository;
 		this.permissionRepository = permissionRepository;
+		this.usuarioRepository = usuarioRepository;
 	}
 	
 	public List<Role> listar(){
@@ -46,7 +49,7 @@ public class RoleService {
 	}
 	
 	public Role atualizar(Long id, Role role) {
-		Role roleBanco = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrador."));
+		Role roleBanco = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
 		
 		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();	
 		List<Permissao> permissoes = permissionRepository.findAllById(ids);
@@ -65,6 +68,10 @@ public class RoleService {
 	public void excluir(Long id) {
 		if(!roleRepository.existsById(id)) {
 			throw new RecursoNaoEncontradoException("Papel não encontrado.");
+		}
+		
+		if(usuarioRepository.existsByRoleId(id)) {
+			throw new RegraNegocioException("Não é possivel excluir o Papel pois existem usuários associados.");
 		}
 		
 		roleRepository.deleteById(id);
