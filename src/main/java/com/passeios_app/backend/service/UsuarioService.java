@@ -49,7 +49,19 @@ public class UsuarioService {
 	}
 	
 	public Usuario atualizar(Long id, Usuario usuario) {
+		if(usuario.getRole() == null || usuario.getRole().getId() == null) {
+			throw new RegraNegocioException("Usuário deve possui um papel");	
+		}
+		
+		Role role = roleRepository.findById(usuario.getRole().getId())
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
+		
 		Usuario existente = buscarPorId(id);
+		
+		if(usuarioRepository.existsByEmailAndIdNot(usuario.getEmail(), id)) {
+			throw new RegraNegocioException("Já existe um usuário com este e-mail.");
+		}
+		
 		existente.setNome(usuario.getNome());
 		existente.setEmail(usuario.getEmail());
 		existente.setSenha(usuario.getSenha());

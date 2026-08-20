@@ -58,12 +58,7 @@ public class RoleService {
 		roleBanco.setNome(role.getNome());
 		roleBanco.setDescricao(role.getDescricao());
 		roleBanco.setPermissoes(permissoes);
-		
-		Role existente = buscarPorId(id);
-		existente.setNome(role.getNome());
-		existente.setDescricao(role.getDescricao());
-		existente.setPermissoes(role.getPermissoes());
-		
+	
 		return roleRepository.save(roleBanco);
 	}
 	
