@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.passeios_app.backend.dto.UsuarioRequestDTO;
+import com.passeios_app.backend.dto.UsuarioResponseDTO;
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
 import com.passeios_app.backend.exception.RegraNegocioException;
 import com.passeios_app.backend.model.Role;
@@ -31,21 +33,26 @@ public class UsuarioService {
 				.orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado."));
 	}
 	
-	public Usuario salvar(Usuario usuario) {
-		if(usuario.getRole() == null || usuario.getRole().getId() == null) {
+	public UsuarioResponseDTO salvar(UsuarioRequestDTO dto) {
+		if(dto.getRoleId() == null) {
 			throw new RegraNegocioException("Usuário deve possuir um papel.");
 		}
 		
-		Role role = roleRepository.findById(usuario.getRole().getId())
+		Role role = roleRepository.findById(dto.getRoleId())
 				.orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
 		
-		if(usuarioRepository.existsByEmail(usuario.getEmail())) {
+		if(usuarioRepository.existsByEmail(dto.getEmail())) {
 			throw new RegraNegocioException("E-mail já está em uso.");
 		}
 		
+		Usuario usuario = new Usuario();
+		usuario.setNome(dto.getNome());
+		usuario.setEmail(dto.getEmail());
+		usuario.setSenha(dto.getSenha());
 		usuario.setRole(role);
 		
-		return usuarioRepository.save(usuario);
+		Usuario salvo = usuarioRepository.save(usuario);
+		return converterResponseDTO(salvo);
 	}
 	
 	public Usuario atualizar(Long id, Usuario usuario) {
@@ -77,5 +84,18 @@ public class UsuarioService {
 		
 		usuarioRepository.deleteById(id);
 	}
-
+	
+	private UsuarioResponseDTO converterResponseDTO(Usuario usuario) {
+		UsuarioResponseDTO dto = new UsuarioResponseDTO();
+		dto.setId(usuario.getId());
+		dto.setNome(usuario.getNome());
+		dto.setEmail(usuario.getEmail());
+		
+		if(usuario.getRole() != null) {
+			dto.setRoleId(usuario.getRole().getId());
+		}
+		
+		return dto;
+	}
+	
 }
