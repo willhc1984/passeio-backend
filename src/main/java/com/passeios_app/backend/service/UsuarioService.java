@@ -1,5 +1,6 @@
 package com.passeios_app.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,8 +25,15 @@ public class UsuarioService {
 		this.roleRepository = roleRepository;
 	}
 	
-	public List<Usuario> listar(){
-		return usuarioRepository.findAll();
+	public List<UsuarioResponseDTO> listar(){
+		List<Usuario> usuarios = usuarioRepository.findAll();		
+		List<UsuarioResponseDTO> dtos = new ArrayList<>();
+		
+		for (Usuario usuario : usuarios) {
+			dtos.add(converterResponseDTO(usuario));
+		}
+		
+		return dtos;
 	}
 	
 	public Usuario buscarPorId(Long id) {

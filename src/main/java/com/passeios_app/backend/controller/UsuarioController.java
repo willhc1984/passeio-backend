@@ -29,7 +29,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping
-	public List<Usuario> listar(){
+	public List<UsuarioResponseDTO> listar(){
 		return usuarioService.listar();
 	}
 	
