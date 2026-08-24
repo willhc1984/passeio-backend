@@ -25,13 +25,16 @@ public class UsuarioService {
 		this.roleRepository = roleRepository;
 	}
 	
-	public List<UsuarioResponseDTO> listar(){
+	public List<UsuarioResponseDTO> listar(){	
+		
+		//return usuarioRepository.findAll().stream().map(this::converterResponseDTO).toList();
+		
 		List<Usuario> usuarios = usuarioRepository.findAll();		
-		List<UsuarioResponseDTO> dtos = new ArrayList<>();
+		List<UsuarioResponseDTO> dtos = new ArrayList<>();	
 		
 		for (Usuario usuario : usuarios) {
 			dtos.add(converterResponseDTO(usuario));
-		}
+		}		
 		
 		return dtos;
 	}
