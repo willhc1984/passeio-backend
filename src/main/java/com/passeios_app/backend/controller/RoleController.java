@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.passeios_app.backend.dto.RoleRequestDTO;
+import com.passeios_app.backend.dto.RoleResponseDTO;
 import com.passeios_app.backend.model.Role;
 import com.passeios_app.backend.service.RoleService;
 
@@ -25,23 +27,23 @@ public class RoleController {
 	}
 	
 	@GetMapping
-	public List<Role> listar(){
+	public List<RoleResponseDTO> listar(){
 		return roleService.listar();
 	}
 	
 	@GetMapping("/{id}")
-	public Role buscarPoId(@PathVariable Long id) {
+	public RoleResponseDTO buscarPoId(@PathVariable Long id) {
 		return roleService.buscarPorId(id);
 	}
 	
 	@PostMapping
-	public Role salvar(@RequestBody Role role) {
-		return roleService.salvar(role);
+	public RoleResponseDTO salvar(@RequestBody RoleRequestDTO dto) {
+		return roleService.salvar(dto);
 	}
 	
 	@PutMapping("/{id}")
-	public Role atualizar(@PathVariable Long id, @RequestBody Role role) {
-		return roleService.atualizar(id, role);
+	public RoleResponseDTO atualizar(@PathVariable Long id, @RequestBody RoleRequestDTO dto) {
+		return roleService.atualizar(id, dto);
 	}
 	
 	@DeleteMapping("/{id}")

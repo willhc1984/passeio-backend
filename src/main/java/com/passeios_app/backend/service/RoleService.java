@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.passeios_app.backend.dto.PermissaoDTO;
+import com.passeios_app.backend.dto.RoleRequestDTO;
+import com.passeios_app.backend.dto.RoleResponseDTO;
 import com.passeios_app.backend.exception.RecursoNaoEncontradoException;
 import com.passeios_app.backend.exception.RegraNegocioException;
 import com.passeios_app.backend.model.Permissao;
@@ -25,44 +28,53 @@ public class RoleService {
 		this.usuarioRepository = usuarioRepository;
 	}
 	
-	public List<Role> listar(){
-		return roleRepository.findAll();
+	public List<RoleResponseDTO> listar(){
+		return roleRepository.findAll().stream().map(this::converterResponseRoleDTO).toList();
 	}
 	
-	public Role buscarPorId(Long id) {
-		return roleRepository.findById(id)
+	public RoleResponseDTO buscarPorId(Long id) {
+		return roleRepository.findById(id).map(this::converterResponseRoleDTO)
 				.orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado"));
 	}
 	
-	public Role salvar(Role role) {
-		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();
-		System.out.println("Id's encontradas: " + ids);
+	public RoleResponseDTO salvar(RoleRequestDTO dto) {
+		List<Long> ids = dto.getPermissoesIds();
 		List<Permissao> permissoes = permissionRepository.findAllById(ids);
-		System.out.println("Permissões: " + permissoes);
-		
+				
 		if(permissoes.size() != ids.size()) {
 			throw new RegraNegocioException("Uma ou mais permissões não existem.");
 		}
 		
+		Role role = new Role();
+		role.setNome(dto.getNome());
+		role.setDescricao(dto.getDescricao());
 		role.setPermissoes(permissoes);
-		return roleRepository.save(role);
+		
+		Role salva = roleRepository.save(role);
+		
+		return converterResponseRoleDTO(salva);
 	}
 	
-	public Role atualizar(Long id, Role role) {
-		Role roleBanco = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
+	public RoleResponseDTO atualizar(Long id, RoleRequestDTO dto) {
+		Role role = roleRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Papel não encontrado."));
 		
-		List<Long> ids = role.getPermissoes().stream().map(Permissao::getId).toList();	
+		if(dto.getPermissoesIds() == null) {
+			throw new RegraNegocioException("As permissões devem ser informadas.");
+		}
+		
+		List<Long> ids = dto.getPermissoesIds();
 		List<Permissao> permissoes = permissionRepository.findAllById(ids);
 		
 		if(permissoes.size() != ids.size()) {
 			throw new RegraNegocioException("Uma ou mais permissões não existem.");
 		}
 		
-		roleBanco.setNome(role.getNome());
-		roleBanco.setDescricao(role.getDescricao());
-		roleBanco.setPermissoes(permissoes);
-	
-		return roleRepository.save(roleBanco);
+		role.setNome(dto.getNome());
+		role.setDescricao(dto.getDescricao());
+		role.setPermissoes(permissoes);
+		
+		Role salva = roleRepository.save(role);
+		return converterResponseRoleDTO(salva);
 	}
 	
 	public void excluir(Long id) {
@@ -75,6 +87,27 @@ public class RoleService {
 		}
 		
 		roleRepository.deleteById(id);
+	}
+	
+	private RoleResponseDTO converterResponseRoleDTO(Role role) {
+		RoleResponseDTO dto = new RoleResponseDTO();
+		dto.setId(role.getId());
+		dto.setNome(role.getNome());
+		dto.setDescricao(role.getDescricao());	
+		
+		List<PermissaoDTO> permissoes = role.getPermissoes().stream().map(this::converterPermissaoResponseDTO).toList();
+		
+		dto.setPermissoes(permissoes);
+		
+		return dto;
+	}
+	
+	private PermissaoDTO converterPermissaoResponseDTO(Permissao permissao) {
+		PermissaoDTO dto = new PermissaoDTO();
+		dto.setId(permissao.getId());
+		dto.setCodigo(permissao.getCodigo());
+		dto.setDescricao(permissao.getDescricao());
+		return dto;
 	}
 	
 }
