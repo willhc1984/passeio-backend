@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.passeios_app.backend.dto.PermissaoDTO;
 import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.service.PermissionService;
 
@@ -25,23 +26,23 @@ public class PermissionController {
 	}
 	
 	@GetMapping
-	public List<Permissao> listar(){
+	public List<PermissaoDTO> listar(){
 		return permissionService.listar();
 	}
 		
 	@GetMapping("/{id}")
-	public Permissao buscarPorId(@PathVariable Long id) {
+	public PermissaoDTO buscarPorId(@PathVariable Long id) {
 		return permissionService.buscarPorId(id);
 	}
 	
 	@PostMapping
-	public Permissao salvar(@RequestBody Permissao permissao) {
-		return permissionService.salvar(permissao);
+	public PermissaoDTO salvar(@RequestBody PermissaoDTO dto) {
+		return permissionService.salvar(dto);
 	}
 	
 	@PutMapping("/{id}")
-	public Permissao atualizar(@PathVariable Long id, @RequestBody Permissao permissao) {
-		return permissionService.atualizar(id, permissao);
+	public PermissaoDTO atualizar(@PathVariable Long id, @RequestBody PermissaoDTO dto) {
+		return permissionService.atualizar(id, dto);
 	}
 	
 	@DeleteMapping("/{id}")
