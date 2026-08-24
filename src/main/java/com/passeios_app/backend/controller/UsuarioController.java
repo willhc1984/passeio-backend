@@ -34,7 +34,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/{id}")
-	public Usuario buscarPoId(@PathVariable Long id) {
+	public UsuarioResponseDTO buscarPoId(@PathVariable Long id) {
 		return usuarioService.buscarPorId(id);
 	}
 	
@@ -44,7 +44,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{id}")
-	public Usuario atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+	public UsuarioResponseDTO atualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuario) {
 		return usuarioService.atualizar(id, usuario);
 	}
 	
