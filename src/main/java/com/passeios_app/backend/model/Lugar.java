@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.passeios_app.backend.model.Categoria;
 
 @Entity
@@ -75,6 +76,4 @@ public class Lugar {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-
-
 }

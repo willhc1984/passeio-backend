@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.passeios_app.backend.dto.CategoriaRequestDTO;
+import com.passeios_app.backend.dto.CategoriaResponseDTO;
 import com.passeios_app.backend.model.Categoria;
 import com.passeios_app.backend.service.CategoriaService;
 
@@ -25,23 +27,23 @@ public class CategoriaController {
 	}
 	
 	@GetMapping
-	public List<Categoria> listar(){
+	public List<CategoriaResponseDTO> listar(){
 		return service.listar();
 	}
 		
 	@GetMapping("/{id}")
-	public Categoria buscarPorId(@PathVariable Long id) {
+	public CategoriaResponseDTO buscarPorId(@PathVariable Long id) {
 		return service.buscarPorId(id);
 	}
 	
 	@PostMapping
-	public Categoria salvar(@RequestBody Categoria categoria) {
-		return service.salvar(categoria);
+	public CategoriaResponseDTO salvar(@RequestBody CategoriaRequestDTO dto) {
+		return service.salvar(dto);
 	}
 	
 	@PutMapping("/{id}")
-	public Categoria atualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
-		return service.atualizar(id, categoria);
+	public CategoriaResponseDTO atualizar(@PathVariable Long id, @RequestBody CategoriaRequestDTO dto) {
+		return service.atualizar(id, dto);
 	}
 	
 	@DeleteMapping("/{id}")
