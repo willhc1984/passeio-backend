@@ -4,7 +4,7 @@ public class LugarRequestDTO {
 	
 	private String nome;
 	private String localizacao;
-	private String urlfoto;
+	private String urlFoto;
 	private Double avaliacao;
 	private Long categoriaId;
 	
@@ -20,11 +20,11 @@ public class LugarRequestDTO {
 	public void setLocalizacao(String localizacao) {
 		this.localizacao = localizacao;
 	}
-	public String getUrlfoto() {
-		return urlfoto;
+	public String getUrlFoto() {
+		return urlFoto;
 	}
-	public void setUrlfoto(String urlfoto) {
-		this.urlfoto = urlfoto;
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
 	}
 	public Double getAvaliacao() {
 		return avaliacao;

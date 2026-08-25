@@ -79,7 +79,6 @@ public class CategoriaService {
 	
 	private LugarResponseDTO converterLugarResponseDTO(Lugar lugar) {
 		LugarResponseDTO dto = new LugarResponseDTO();
-		dto.setId(lugar.getId());
 		dto.setNome(lugar.getNome());
 		dto.setLocalizacao(lugar.getLocalizacao());
 		dto.setUrlFoto(lugar.getUrlFoto());

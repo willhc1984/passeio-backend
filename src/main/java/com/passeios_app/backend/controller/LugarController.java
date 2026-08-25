@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.passeios_app.backend.dto.LugarRequestDTO;
+import com.passeios_app.backend.dto.LugarResponseDTO;
 import com.passeios_app.backend.model.Lugar;
 import com.passeios_app.backend.service.LugarService;
 
@@ -25,23 +27,23 @@ public class LugarController {
 	}
 	
 	@GetMapping
-	public List<Lugar> listar(){
+	public List<LugarResponseDTO> listar(){
 		return service.listar();
 	}
 	
 	@GetMapping("/{id}")
-	public Lugar buscarPorId(@PathVariable Long id) {
+	public LugarResponseDTO buscarPorId(@PathVariable Long id) {
 		return service.buscarPorId(id);
 	}
 	
 	@PostMapping
-	public Lugar salvar(@RequestBody Lugar lugar) {
-		return service.salvar(lugar);
+	public LugarResponseDTO salvar(@RequestBody LugarRequestDTO dto) {
+		return service.salvar(dto);
 	}
 	
 	@PutMapping("/{id}")
-	public Lugar atualizar(@PathVariable Long id, @RequestBody Lugar lugar) {
-		return service.atualizar(id, lugar);
+	public LugarResponseDTO atualizar(@PathVariable Long id, @RequestBody LugarRequestDTO dto) {
+		return service.atualizar(id, dto);
 	}
 	
 	@DeleteMapping("/{id}")

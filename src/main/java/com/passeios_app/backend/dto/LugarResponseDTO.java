@@ -7,6 +7,7 @@ public class LugarResponseDTO {
     private String localizacao;
     private String urlFoto;
     private Double avaliacao;
+    private Long categoriaId;
     
 	public Long getId() {
 		return id;
@@ -38,4 +39,12 @@ public class LugarResponseDTO {
 	public void setAvaliacao(Double avaliacao) {
 		this.avaliacao = avaliacao;
 	}
+	public Long getCategoriaId() {
+		return categoriaId;
+	}
+	public void setCategoriaId(Long categoriaId) {
+		this.categoriaId = categoriaId;
+	}
+	
 }
+
