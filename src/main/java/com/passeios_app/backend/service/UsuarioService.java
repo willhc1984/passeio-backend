@@ -1,8 +1,8 @@
 package com.passeios_app.backend.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.dto.UsuarioRequestDTO;
@@ -19,24 +19,16 @@ public class UsuarioService {
 
 	private final UsuarioRepository usuarioRepository;
 	private final RoleRepository roleRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public UsuarioService(UsuarioRepository usuarioRepository, RoleRepository roleRepository) {
+	public UsuarioService(UsuarioRepository usuarioRepository, RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
 		this.roleRepository = roleRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public List<UsuarioResponseDTO> listar() {
-
 		return usuarioRepository.findAll().stream().map(this::converterResponseDTO).toList();
-
-//		List<Usuario> usuarios = usuarioRepository.findAll();		
-//		List<UsuarioResponseDTO> dtos = new ArrayList<>();	
-//		
-//		for (Usuario usuario : usuarios) {
-//			dtos.add(converterResponseDTO(usuario));
-//		}		
-//		
-//		return dtos;
 	}
 
 	public UsuarioResponseDTO buscarPorId(Long id) {
@@ -63,7 +55,7 @@ public class UsuarioService {
 		Usuario usuario = new Usuario();
 		usuario.setNome(dto.getNome());
 		usuario.setEmail(dto.getEmail());
-		usuario.setSenha(dto.getSenha());
+		usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
 		usuario.setRole(role);
 
 		Usuario salvo = usuarioRepository.save(usuario);
@@ -85,7 +77,7 @@ public class UsuarioService {
 	  
 		existente.setNome(dto.getNome()); 
 		existente.setEmail(dto.getEmail());
-		existente.setSenha(dto.getSenha()); 
+		existente.setSenha(passwordEncoder.encode(dto.getSenha())); 
 		existente.setRole(role);
 	  
 		Usuario atualizado = usuarioRepository.save(existente); 
