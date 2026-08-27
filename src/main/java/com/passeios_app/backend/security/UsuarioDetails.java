@@ -1,9 +1,9 @@
 package com.passeios_app.backend.security;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.passeios_app.backend.model.Usuario;
@@ -20,7 +20,12 @@ public class UsuarioDetails implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
+		return usuario
+				.getRole()
+				.getPermissoes()
+				.stream()
+				.map(permissao -> new SimpleGrantedAuthority(permissao.getCodigo()))
+				.toList();		
 	}
 
 	@Override

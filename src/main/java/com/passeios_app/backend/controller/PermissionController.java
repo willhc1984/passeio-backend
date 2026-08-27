@@ -2,6 +2,7 @@ package com.passeios_app.backend.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,26 +26,31 @@ public class PermissionController {
 		this.permissionService = permissionService;
 	}
 	
+	@PreAuthorize("hasAuthority('permissao.visualizar')")
 	@GetMapping
 	public List<PermissaoDTO> listar(){
 		return permissionService.listar();
 	}
-		
+	
+	@PreAuthorize("hasAuthority('permissao.visualizar')")
 	@GetMapping("/{id}")
 	public PermissaoDTO buscarPorId(@PathVariable Long id) {
 		return permissionService.buscarPorId(id);
 	}
 	
+	@PreAuthorize("hasAuthority('permissao.excluir')")
 	@PostMapping
 	public PermissaoDTO salvar(@RequestBody PermissaoDTO dto) {
 		return permissionService.salvar(dto);
 	}
 	
+	@PreAuthorize("hasAuthority('permissao.editar')")
 	@PutMapping("/{id}")
 	public PermissaoDTO atualizar(@PathVariable Long id, @RequestBody PermissaoDTO dto) {
 		return permissionService.atualizar(id, dto);
 	}
 	
+	@PreAuthorize("hasAuthority('permissao.excluir')")
 	@DeleteMapping("/{id}")
 	public void excluir(@PathVariable Long id) {
 		permissionService.excluir(id);

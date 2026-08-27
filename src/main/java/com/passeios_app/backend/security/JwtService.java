@@ -3,8 +3,6 @@ package com.passeios_app.backend.security;
 import java.security.Key;
 import java.util.Date;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;

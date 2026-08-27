@@ -2,6 +2,7 @@ package com.passeios_app.backend.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,26 +27,31 @@ public class CategoriaController {
 		this.service = service;
 	}
 	
+	@PreAuthorize("hasAuthority('categoria.visualizar')")
 	@GetMapping
 	public List<CategoriaResponseDTO> listar(){
 		return service.listar();
 	}
-		
+	
+	@PreAuthorize("hasAuthority('categoria.visualizar')")
 	@GetMapping("/{id}")
 	public CategoriaResponseDTO buscarPorId(@PathVariable Long id) {
 		return service.buscarPorId(id);
 	}
 	
+	@PreAuthorize("hasAuthority('categoria.criar')")
 	@PostMapping
 	public CategoriaResponseDTO salvar(@RequestBody CategoriaRequestDTO dto) {
 		return service.salvar(dto);
 	}
 	
+	@PreAuthorize("hasAuthority('categoria.editar')")
 	@PutMapping("/{id}")
 	public CategoriaResponseDTO atualizar(@PathVariable Long id, @RequestBody CategoriaRequestDTO dto) {
 		return service.atualizar(id, dto);
 	}
 	
+	@PreAuthorize("hasAuthority('categoria.excluir')")
 	@DeleteMapping("/{id}")
 	public void excluir(@PathVariable Long id) {
 		service.excluir(id);
