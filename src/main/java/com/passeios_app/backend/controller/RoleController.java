@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.passeios_app.backend.dto.RoleRequestDTO;
 import com.passeios_app.backend.dto.RoleResponseDTO;
-import com.passeios_app.backend.model.Role;
 import com.passeios_app.backend.service.RoleService;
 
 @RestController
@@ -27,31 +26,31 @@ public class RoleController {
 		this.roleService = roleService;
 	}
 	
-	@PreAuthorize("hasAuthority('role.visualizar')")
+	@PreAuthorize("hasAuthority('papel.visualizar')")
 	@GetMapping
 	public List<RoleResponseDTO> listar(){
 		return roleService.listar();
 	}
 	
-	@PreAuthorize("hasAuthority('role.visualizar')")
+	@PreAuthorize("hasAuthority('papel.visualizar')")
 	@GetMapping("/{id}")
 	public RoleResponseDTO buscarPoId(@PathVariable Long id) {
 		return roleService.buscarPorId(id);
 	}
 	
-	@PreAuthorize("hasAuthority('role.criar')")
+	@PreAuthorize("hasAuthority('papel.criar')")
 	@PostMapping
 	public RoleResponseDTO salvar(@RequestBody RoleRequestDTO dto) {
 		return roleService.salvar(dto);
 	}
 	
-	@PreAuthorize("hasAuthority('role.editar')")
+	@PreAuthorize("hasAuthority('papel.editar')")
 	@PutMapping("/{id}")
 	public RoleResponseDTO atualizar(@PathVariable Long id, @RequestBody RoleRequestDTO dto) {
 		return roleService.atualizar(id, dto);
 	}
 	
-	@PreAuthorize("hasAuthority('role.excluir')")
+	@PreAuthorize("hasAuthority('papel.excluir')")
 	@DeleteMapping("/{id}")
 	public void excluir(@PathVariable Long id) {
 		roleService.excluir(id);

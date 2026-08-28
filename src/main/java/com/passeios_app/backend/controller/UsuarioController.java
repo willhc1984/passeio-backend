@@ -34,7 +34,7 @@ public class UsuarioController {
 		return usuarioService.listar();
 	}
 	
-	@PreAuthorize("hasAuthoriry('usuario.visualizar')")
+	@PreAuthorize("hasAuthority('usuario.visualizar')")
 	@GetMapping("/{id}")
 	public UsuarioResponseDTO buscarPoId(@PathVariable Long id) {
 		return usuarioService.buscarPorId(id);
