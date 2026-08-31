@@ -19,7 +19,7 @@ public class JwtService {
 		Date agora = new Date();
 		Date dataExpiracao = new Date(agora.getTime() + expiracao);
 		
-		return Jwts.builder().subject(email).issuedAt(dataExpiracao).expiration(dataExpiracao).signWith(chave).compact();
+		return Jwts.builder().subject(email).issuedAt(agora).expiration(dataExpiracao).signWith(chave).compact();
 	}
 	
 	public String extrairEmail(String token) {
