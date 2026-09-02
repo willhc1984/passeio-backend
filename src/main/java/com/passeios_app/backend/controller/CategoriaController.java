@@ -27,13 +27,13 @@ public class CategoriaController {
 		this.service = service;
 	}
 	
-	@PreAuthorize("hasAuthority('categoria.visualizar')")
+	//@PreAuthorize("hasAuthority('categoria.visualizar')")
 	@GetMapping
 	public List<CategoriaResponseDTO> listar(){
 		return service.listar();
 	}
 	
-	@PreAuthorize("hasAuthority('categoria.visualizar')")
+	//@PreAuthorize("hasAuthority('categoria.visualizar')")
 	@GetMapping("/{id}")
 	public CategoriaResponseDTO buscarPorId(@PathVariable Long id) {
 		return service.buscarPorId(id);

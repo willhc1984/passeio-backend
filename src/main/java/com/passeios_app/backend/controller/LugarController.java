@@ -27,13 +27,13 @@ public class LugarController {
 		this.service = service;
 	}
 	
-	@PreAuthorize("hasAuthority('lugar.visualizar')")
+	//@PreAuthorize("hasAuthority('lugar.visualizar')")
 	@GetMapping
 	public List<LugarResponseDTO> listar(){
 		return service.listar();
 	}
 	
-	@PreAuthorize("hasAuthority('lugar.visualizar')")
+	//@PreAuthorize("hasAuthority('lugar.visualizar')")
 	@GetMapping("/{id}")
 	public LugarResponseDTO buscarPorId(@PathVariable Long id) {
 		return service.buscarPorId(id);
