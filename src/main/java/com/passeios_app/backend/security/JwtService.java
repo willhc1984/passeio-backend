@@ -1,19 +1,25 @@
 package com.passeios_app.backend.security;
 
-import java.security.Key;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
 	
-	private final Key chave = Keys.secretKeyFor(SignatureAlgorithm.HS256);	
+	private final SecretKey chave;
 	private final long expiracao = 1000 * 60 * 60;  // uma hora
+	
+	public JwtService(@Value("${jwt.secret}") String secret) {
+		this.chave = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+	}
 	
 	public String gerarToken(String email) {
 		Date agora = new Date();
@@ -24,7 +30,7 @@ public class JwtService {
 	
 	public String extrairEmail(String token) {
 		return Jwts.parser()
-				.verifyWith((javax.crypto.SecretKey) chave)
+				.verifyWith(chave)
 				.build()
 				.parseSignedClaims(token)
 				.getPayload()

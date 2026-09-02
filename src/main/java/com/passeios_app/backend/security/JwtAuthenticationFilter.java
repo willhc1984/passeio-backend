@@ -38,16 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			return;
 		}
 		
-		String token = header.substring(7);
-		String email = jwtService.extrairEmail(token);
-		
-		UserDetails usuarioDetails = usuarioDetailsService.loadUserByUsername(email);
-		
-		UsernamePasswordAuthenticationToken autenticacao = new UsernamePasswordAuthenticationToken(usuarioDetails, null, usuarioDetails.getAuthorities());
-		
-		autenticacao.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-		
-		SecurityContextHolder.getContext().setAuthentication(autenticacao);		
+		try {
+			String token = header.substring(7);
+			String email = jwtService.extrairEmail(token);			
+			UserDetails usuarioDetails = usuarioDetailsService.loadUserByUsername(email);			
+			UsernamePasswordAuthenticationToken autenticacao = new UsernamePasswordAuthenticationToken(usuarioDetails, null, usuarioDetails.getAuthorities());			
+			autenticacao.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));			
+			SecurityContextHolder.getContext().setAuthentication(autenticacao);					
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
+		}
 		
 		filterChain.doFilter(request, response);
 	}
