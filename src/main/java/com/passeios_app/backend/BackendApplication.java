@@ -17,6 +17,7 @@ public class BackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 //		SecretKey key = Jwts.SIG.HS256.key().build();
+//		System.out.println(key.getEncoded());
 //		String secret = Encoders.BASE64.encode(key.getEncoded());
 //		System.out.println(secret);
 	}

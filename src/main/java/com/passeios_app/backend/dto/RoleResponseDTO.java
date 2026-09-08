@@ -4,16 +4,16 @@ import java.util.List;
 
 public class RoleResponseDTO {
 	
-	private Long Id;
+	private Long id;
 	private String nome;
 	private String descricao;
 	private List<PermissaoDTO> permissoes;
 	
 	public Long getId() {
-		return Id;
+		return id;
 	}
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getNome() {
 		return nome;
@@ -33,7 +33,5 @@ public class RoleResponseDTO {
 	public void setPermissoes(List<PermissaoDTO> permissoes) {
 		this.permissoes = permissoes;
 	}
-	
-	
 
 }
