@@ -89,6 +89,4 @@ public class Role {
 		this.permissoes = permissoes;
 	}
 	
-	
-	
 }

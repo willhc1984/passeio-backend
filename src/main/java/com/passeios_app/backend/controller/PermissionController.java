@@ -1,7 +1,7 @@
 package com.passeios_app.backend.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.passeios_app.backend.dto.PermissaoDTO;
-import com.passeios_app.backend.model.Permissao;
 import com.passeios_app.backend.service.PermissionService;
 
 @RestController
@@ -28,8 +27,8 @@ public class PermissionController {
 	
 	@PreAuthorize("hasAuthority('permissao.visualizar')")
 	@GetMapping
-	public List<PermissaoDTO> listar(){
-		return permissionService.listar();
+	public Page<PermissaoDTO> listar(Pageable pageable){
+		return permissionService.listar(pageable);
 	}
 	
 	@PreAuthorize("hasAuthority('permissao.visualizar')")

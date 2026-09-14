@@ -1,8 +1,7 @@
 package com.passeios_app.backend.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.dto.PermissaoDTO;
@@ -23,16 +22,19 @@ public class PermissionService {
 		this.roleRepository = roleRepository;
 	}
 	
-	public List<PermissaoDTO> listar(){
-		//return permissionRepository.findAll().stream().map(this::converterDTO).toList();
-		List<Permissao> permissoes = permissionRepository.findAll();
-		List<PermissaoDTO> dtos = new ArrayList<PermissaoDTO>();
-		
-		for(Permissao permissao : permissoes) {
-			dtos.add(converterDTO(permissao));
-		}
-		
-		return dtos;
+	public Page<PermissaoDTO> listar(Pageable pageable){
+		return permissionRepository
+				.findAll(pageable)
+				.map(this::converterDTO);
+	
+		/*
+		 * List<Permissao> permissoes = permissionRepository.findAll();
+		 * List<PermissaoDTO> dtos = new ArrayList<PermissaoDTO>();
+		 * 
+		 * for(Permissao permissao : permissoes) { dtos.add(converterDTO(permissao)); }
+		 * 
+		 * return dtos;
+		 */
 	}
 	
 	public PermissaoDTO buscarPorId(Long id) {
