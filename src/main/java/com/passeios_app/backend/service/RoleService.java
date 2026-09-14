@@ -2,6 +2,8 @@ package com.passeios_app.backend.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.passeios_app.backend.dto.PermissaoDTO;
@@ -28,8 +30,8 @@ public class RoleService {
 		this.usuarioRepository = usuarioRepository;
 	}
 	
-	public List<RoleResponseDTO> listar(){
-		return roleRepository.findAll().stream().map(this::converterResponseRoleDTO).toList();
+	public Page<RoleResponseDTO> listar(Pageable pageable){
+		return roleRepository.findAll(pageable).map(this::converterResponseRoleDTO);
 	}
 	
 	public RoleResponseDTO buscarPorId(Long id) {
