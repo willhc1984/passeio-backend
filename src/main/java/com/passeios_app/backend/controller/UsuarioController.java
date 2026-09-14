@@ -2,6 +2,8 @@ package com.passeios_app.backend.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +32,8 @@ public class UsuarioController {
 	
 	@PreAuthorize("hasAuthority('usuario.visualizar')")
 	@GetMapping
-	public List<UsuarioResponseDTO> listar(){
-		return usuarioService.listar();
+	public Page<UsuarioResponseDTO> listar(Pageable pageable){
+		return usuarioService.listar(pageable);
 	}
 	
 	@PreAuthorize("hasAuthority('usuario.visualizar')")

@@ -2,6 +2,8 @@ package com.passeios_app.backend.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +29,10 @@ public class UsuarioService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public List<UsuarioResponseDTO> listar() {
-		return usuarioRepository.findAll().stream().map(this::converterResponseDTO).toList();
+	public Page<UsuarioResponseDTO> listar(Pageable pageable) {
+		return usuarioRepository
+				.findAll(pageable)
+				.map(this::converterResponseDTO);
 	}
 
 	public UsuarioResponseDTO buscarPorId(Long id) {
